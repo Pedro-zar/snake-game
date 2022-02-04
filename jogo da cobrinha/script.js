@@ -3,7 +3,10 @@ let context = canvas.getContext("2d");
 let box = 16;
 let snake = [{ x: 16 * box, y: 16 * box }];
 let direction = 1;
-
+let food = {
+  x: Math.floor(Math.random() * 31 + 1) * box,
+  y: Math.floor(Math.random() * 31 + 1) * box,
+};
 function createBG() {
   context.fillStyle = "lightgreen";
   context.fillRect(0, 0, box * 32, box * 32);
@@ -17,14 +20,14 @@ function createSnake() {
 }
 
 function start() {
-    if(snake[0].x > 31*box && direction == 2) snake[0].x =0
-    else if(snake[0].x < 0 && direction == 0) snake[0].x = box*31
-    else if(snake[0].y < 0 && direction == 1) snake[0].y = box*31
-    else if(snake[0].y > 31*box && direction == 3) snake[0].y = 0
-    
+  if (snake[0].x > 31 * box && direction == 2) snake[0].x = 0;
+  else if (snake[0].x < 0 && direction == 0) snake[0].x = box * 31;
+  else if (snake[0].y < 0 && direction == 1) snake[0].y = box * 31;
+  else if (snake[0].y > 31 * box && direction == 3) snake[0].y = 0;
+
   createBG();
   createSnake();
-
+  drawFood();
   let snakeX = snake[0].x;
   let snakeY = snake[0].y;
 
@@ -55,4 +58,9 @@ function update(event) {
   if (event.keycode == 40 && direction != "up") direction = 3; //down
 }
 
-let game = setInterval(start,100);
+function drawFood() {
+  context.fillStyle = "red";
+  context.fillRect(food.x, food.y, box, box);
+}
+
+let game = setInterval(start, 100);
