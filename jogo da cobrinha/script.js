@@ -25,6 +25,13 @@ function start() {
   else if (snake[0].y < 0 && direction == 1) snake[0].y = box * 31;
   else if (snake[0].y > 31 * box && direction == 3) snake[0].y = 0;
 
+  for (let i = 1; i < snake.length; i++) {
+    if (snake[0].x == snake[i].x && snake[i].y == snake[0].y) {
+      clearInterval(game);
+      alert("Game Over!");
+    }
+  }
+
   createBG();
   createSnake();
   drawFood();
@@ -39,7 +46,11 @@ function start() {
     ? (snakeX -= box)
     : (snakeY -= box); //up
 
-  snake.pop();
+  if (snakeX != food.x || snakeY != food.y) snake.pop();
+  else {
+    food.x = Math.floor(Math.random() * 31 + 1) * box;
+    food.y = Math.floor(Math.random() * 31 + 1) * box;
+  }
 
   let newHead = {
     x: snakeX,
@@ -52,10 +63,10 @@ function start() {
 document.addEventListener("keydown", update);
 
 function update(event) {
-  if (event.keycode == 37 && direction != "right") direction = 0; //left
-  if (event.keycode == 38 && direction != "down") direction = 1; //up
-  if (event.keycode == 39 && direction != "left") direction = 2; //right
-  if (event.keycode == 40 && direction != "up") direction = 3; //down
+  if (event.keyCode == 37 && direction != 2) direction = 0; //left
+  if (event.keyCode == 38 && direction != 3) direction = 1; //up
+  if (event.keyCode == 39 && direction != 0) direction = 2; //right
+  if (event.keyCode == 40 && direction != 1) direction = 3; //down
 }
 
 function drawFood() {
